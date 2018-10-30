@@ -22,7 +22,7 @@ test('The left arrow button calls handleArrowButtonClick with false when clicked
   expect(component.instance().handleArrowButtonClick).toHaveBeenCalledWith(false);
 });
 
-test('The right arrow button calls handleArrowButtonClick with true when clicked', () => {
+test('The right arrow button calls handleArrowButtonClick with true when clicked\nNote: items end value is dependant on items start value', () => {
   component.instance().handleArrowButtonClick = jest.fn((bool) => {});
   component.find('.product-right-arrow').simulate('click');
   expect(component.instance().handleArrowButtonClick).toHaveBeenCalledTimes(1);

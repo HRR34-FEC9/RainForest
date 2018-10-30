@@ -7,7 +7,6 @@ class App extends React.Component {
 
     this.state = {
       data: [],
-      text: 'HelloW orld',
       itemStart: 1,
       itemEnd: 1
     }
@@ -59,7 +58,6 @@ class App extends React.Component {
           </div>
           <button className='product-right-arrow' onClick={(e) => {this.handleArrowButtonClick(true)}}>{'>'}</button>
         </div>
-        {/* { this.state.text } */}
       </div>
     )
   }
