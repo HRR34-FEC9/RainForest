@@ -25,7 +25,7 @@ class App extends React.Component {
       .catch((err) => {if(err) throw err});
   }
 
-  handleArrowButtonClick(e, bool) {
+  handleArrowButtonClick(bool) {
     if (bool) {
       this.setState({
         itemStart: this.state.itemStart < this.state.data.length - 4 ? this.state.itemStart + 5 : this.state.itemStart,
@@ -49,15 +49,15 @@ class App extends React.Component {
       <div>
         <div>You are viewing items {this.state.itemStart + '-' + this.state.itemEnd} out of {this.state.data.length} items.</div>
         <div className='product-carousel'>
-          <button className='product-left-arrow' onClick={(e) => {this.handleArrowButtonClick(e, false)}}>{'<'}</button>
+          <button className='product-left-arrow' onClick={(e) => {this.handleArrowButtonClick(false)}}>{'<'}</button>
           <div className='item-container'>
             {
-              this.state.data.slice(this.state.itemStart - 1, this.state.itemEnd).map(product => {                
+              this.state.data.slice(this.state.itemStart - 1, this.state.itemEnd).map((product, index) => {   
                 return <Item data={product} key={product.id}/>  
               })
             }
           </div>
-          <button className='product-right-arrow' onClick={(e) => {this.handleArrowButtonClick(e, true)}}>{'>'}</button>
+          <button className='product-right-arrow' onClick={(e) => {this.handleArrowButtonClick(true)}}>{'>'}</button>
         </div>
         {/* { this.state.text } */}
       </div>
