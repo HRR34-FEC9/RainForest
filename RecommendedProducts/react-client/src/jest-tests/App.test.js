@@ -8,7 +8,7 @@ const fetch = require('node-fetch');
 configure({adapter: new Adapter()});
 let component;
 beforeEach(() => {
-  component = shallow(<App />);
+  component = mount(<App />);
 });
 
 test('It makes sure window.fetch is the one from the polyfill', () => {
@@ -35,6 +35,7 @@ test('It tests that itemStart is not being decreased when it is less than five a
 });
 
 test('It tests that itemStart is being decreased when it is greater than five and the left arrow button was clicked', () => {
+  component.state().data = [{id: 1}, {id: 2}, {id: 3}, {id: 4}, {id: 5}, {id: 6}];
   component.state().itemStart = 6;
   expect(component.state().itemStart).toBe(6);
   component.find('.product-left-arrow').simulate('click');
@@ -53,4 +54,31 @@ test('It tests that itemStart does not increase when there are less than five it
   expect(component.state().itemStart).toBe(1);
   component.find('.product-right-arrow').simulate('click');
   expect(component.state().itemStart).toBe(1);
+});
+
+test('It tests that itemEnd does not increase when there are five or fewer items and the right arrow button was clicked', () => {
+  component.state().data = [{id: 1}, {id: 2}, {id: 3}];
+  // Note: itemEnd is updated in the fetch call so in here it will always start out at one even after adding items to data
+  component.find('.product-right-arrow').simulate('click');
+  expect(component.state().itemEnd).toBe(component.state().data.length);
+});
+
+test('It tests that itemEnd does increase when there are more than five items and the right arrow button was clicked', () => {
+  component.state().data = [{id: 1}, {id: 2}, {id: 3}, {id: 4}, {id: 5}, {id: 6}];
+  component.find('.product-right-arrow').simulate('click');
+  expect(component.state().itemEnd).toBe(component.state().data.length);
+});
+
+test('It tests that itemEnd does decrease when it is greater than five and the left arrow button was clicked', () => {
+  component.state().data = [{id: 1}, {id: 2}, {id: 3}, {id: 4}, {id: 5}, {id: 6}];
+  component.state().itemEnd = 6;
+  expect(component.state().itemEnd).toBe(6);
+  component.find('.product-left-arrow').simulate('click');
+  expect(component.state().itemEnd).toBe(5);
+});
+
+test('It tests that itemEnd does not decrease when it is less than or equal to five and the left arrow button was clicked', () => {
+  component.state().data = [{id: 1}, {id: 2}, {id: 3}, {id: 4}];
+  component.find('.product-left-arrow').simulate('click');
+  expect(component.state().itemEnd).toBe(4);
 });
