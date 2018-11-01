@@ -8,7 +8,9 @@ jobs:
     docker:
       # specify the version you desire here
       - image: circleci/node:8.10.0
-
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
       # Specify service dependencies here if necesarry
       # CircleCI maintains a library of pre-built images
       # documented at https://circleci.com/docs/2.0/circleci-images/
