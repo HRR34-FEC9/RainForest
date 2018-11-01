@@ -7,10 +7,10 @@ jobs:
   build:
     docker:
       # specify the version you desire here
-      - image: circleci/node:8.10.0
-        auth:
-          username: $DOCKERHUB_USERNAME
-          password: $DOCKERHUB_PASSWORD
+      - image: circleci/node:8.9.0
+        # auth:
+        #   username: $DOCKERHUB_USERNAME
+        #   password: $DOCKERHUB_PASSWORD
       # Specify service dependencies here if necesarry
       # CircleCI maintains a library of pre-built images
       # documented at https://circleci.com/docs/2.0/circleci-images/
@@ -20,18 +20,18 @@ jobs:
         - checkout
 
         # Download and cache dependencies
-        - resotre_cache:
-          keys:
-          - v1-dependencies-{{ checksum "package.json" }}
-          # fallback to using the latest cache if no exact match is found
-          - v1-dependencies-
+        # - resotre_cache:
+        #   keys:
+        #   - v1-dependencies-{{ checksum "package.json" }}
+        #   # fallback to using the latest cache if no exact match is found
+        #   - v1-dependencies-
 
       - run: npm install
 
-      - save_cache:
-          paths:
-            - Recommended_products/node_modules
-          key: v1-dependencies-{{ checksum "package.json" }}
+      # - save_cache:
+      #     paths:
+      #       - Recommended_products/node_modules
+      #     key: v1-dependencies-{{ checksum "package.json" }}
 
       # run tests!
       - run: npm test
