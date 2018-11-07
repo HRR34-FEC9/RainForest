@@ -64,9 +64,9 @@ test('It tests that itemEnd does not increase when there are five or fewer items
 });
 
 test('It tests that itemEnd does increase when there are more than five items and the right arrow button was clicked', () => {
-  component.state().data = [{id: 1}, {id: 2}, {id: 3}, {id: 4}, {id: 5}, {id: 6}];
+  component.state().data = [{id: 1}, {id: 2}, {id: 3}, {id: 4}, {id: 5}, {id: 6}, {id: 7}];
   component.find('.product-right-arrow').simulate('click');
-  expect(component.state().itemEnd).toBe(component.state().data.length);
+  expect(component.state().itemEnd).toBe(7);
 });
 
 test('It tests that itemEnd does decrease when it is greater than five and the left arrow button was clicked', () => {

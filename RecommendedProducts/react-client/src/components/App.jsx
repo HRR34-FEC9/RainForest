@@ -15,6 +15,7 @@ class App extends React.Component {
   }
 
   componentDidMount() {
+    // Get initial data from data base
     fetch('http://localhost:3001/products')
       .then(body => body.json())
       .then(results => this.setState({
@@ -25,20 +26,18 @@ class App extends React.Component {
   }
 
   handleArrowButtonClick(bool) {
+    // Change which items the user is viewing
     if (bool) {
+      // If we have enough items increment the items we are viewing
       this.setState({
         itemStart: this.state.itemStart < this.state.data.length - 4 ? this.state.itemStart + 5 : this.state.itemStart,
         itemEnd: this.state.itemStart + 9 < this.state.data.length ? this.state.itemStart + 9 : this.state.data.length
       });
     } else if (!bool) {
+      // If we don't have enought items don't increment the amount of items we are viewing
       this.setState({
         itemStart: this.state.itemStart >= 6 ? this.state.itemStart - 5 : 1,
         itemEnd: this.state.itemEnd >= 10 ? this.state.itemEnd - 5 : this.state.data.length < 5 ? this.state.data.length : 5
-      });
-    } else {
-      this.setState({
-        itemStart: this.state.itemStart >= 6 ? this.state.itemStart - 5 : 1,
-        itemEnd: this.state.itemEnd - ((this.state.data.length + 1) - this.state.itemStart)
       });
     }
   }
@@ -46,17 +45,22 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <div className='num-of-viewed-items'>You are viewing items {this.state.itemStart + '-' + this.state.itemEnd} out of {this.state.data.length} items.</div>
-        <div className='product-carousel'>
-          <button className='product-left-arrow' onClick={(e) => {this.handleArrowButtonClick(false)}}>{'<'}</button>
-          <div className='item-container'>
-            {
-              this.state.data.slice(this.state.itemStart - 1, this.state.itemEnd).map((product, index) => {   
-                return <Item data={product} key={product.id}/>  
-              })
-            }
+        <div className='products-carousel'>
+          <div className='products-titles'>
+            <p className='products-title'>Customers who bought this item also bought</p>
+            <p className='num-of-viewed-items'>You are viewing items {this.state.itemStart + '-' + this.state.itemEnd} out of {this.state.data.length} items.</p>
           </div>
-          <button className='product-right-arrow' onClick={(e) => {this.handleArrowButtonClick(true)}}>{'>'}</button>
+          <div className='products'>
+            <button className='products-left-arrow' onClick={(e) => {this.handleArrowButtonClick(false)}}>{'<'}</button>
+            <div className='item-container'>
+              {
+                this.state.data.slice(this.state.itemStart - 1, this.state.itemEnd).map((product, index) => {   
+                  return <Item data={product} key={product.id}/>  
+                })
+              }
+            </div>
+            <button className='products-right-arrow' onClick={(e) => {this.handleArrowButtonClick(true)}}>{'>'}</button>
+          </div>
         </div>
       </div>
     )

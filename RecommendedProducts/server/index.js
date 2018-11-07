@@ -1,7 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const Sequelize = require('sequelize');
-const fs = require('fs');
 
 const sequelize = new Sequelize('recommended_products', 'nathan', 'student', {
   host: 'localhost',
