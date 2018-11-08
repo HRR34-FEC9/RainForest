@@ -1,10 +1,18 @@
+require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const Sequelize = require('sequelize');
 
-const sequelize = new Sequelize('recommended_products', 'nathan', 'student', {
-  host: 'localhost',
+const rpUrl = process.env.RECOMMENDED_PRODUCTS_URL;
+const dbUrl = process.env.DB_URL;
+
+const sequelizeP = new Sequelize(rpUrl, {
   dialect: 'postgres'
+});
+
+const sequelizeV = new Sequelize(dbUrl, {
+  dialect: 'postgres',
+  ssl: true
 });
 
 const app = express();
@@ -20,7 +28,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get('/products', (req, res) => {
-  sequelize.authenticate()
+  sequelizeP.authenticate()
   .then(() => {
     console.log('Connection has been established successfully.');
     })
@@ -28,7 +36,7 @@ app.get('/products', (req, res) => {
       console.error('Unable to connect to the database: ', err);
       res.status(500).send();
     });
-    sequelize.query('SELECT * FROM products ORDER BY id', {type: sequelize.QueryTypes.SELECT})
+    sequelizeP.query('SELECT * FROM products ORDER BY id', {type: sequelizeP.QueryTypes.SELECT})
     .then(data => {
       res.status(200).send(JSON.stringify(data));
     })
@@ -37,9 +45,18 @@ app.get('/products', (req, res) => {
     });
 });
 
-app.get('/index', (req, res) => {
-  console.log(__dirname + '/../react-client/dist');
-  res.status(200).send(__dirname + '/../react-client/dist');
+app.get('/productsdisplay', (req, res) => {
+  let productID = req.query.id;
+  sequelizeV.query(`SELECT * FROM products WHERE id=${productID};`, {
+    type: sequelizeV.QueryTypes.SELECT
+  })
+  .then(data => {
+    res.status(200).json(data);
+  })
+  .catch(err => {
+    console.log(err);
+    releaseEvents.status(500).json(error);
+  });
 });
 
 app.listen(PORT, () => {

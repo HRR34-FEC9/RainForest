@@ -16,7 +16,7 @@ class App extends React.Component {
 
   componentDidMount() {
     // Get initial data from data base
-    fetch('http://localhost:3001/products')
+    fetch('/products')
       .then(body => body.json())
       .then(results => this.setState({
         data: results,
@@ -48,6 +48,7 @@ class App extends React.Component {
         <div className='products-carousel'>
           <div className='products-titles'>
             <p className='products-title'>Customers who bought this item also bought</p>
+            <div className='spacer'></div>
             <p className='num-of-viewed-items'>You are viewing items {this.state.itemStart + '-' + this.state.itemEnd} out of {this.state.data.length} items.</p>
           </div>
           <div className='products'>

@@ -1,28 +1,22 @@
+require('dotenv').config();
 const Sequelize = require('sequelize');
 const loremIpsum = require('./MOCK_DATA.json');
 const { urls } = require('./IMAGE_URLS.json');
 
-let sequelize = new Sequelize('postgres', 'nathan', 'student', {
-  host: 'localhost',
+const rpUrl = process.env.RECOMMENDED_PRODUCTS_URL;
+
+const sequelize = new Sequelize(rpUrl, {
   dialect: 'postgres'
 });
 
 let products = sequelize.define('product', {
   short_desc: Sequelize.TEXT,
   image_url: Sequelize.TEXT,
-  rating: Sequelize.DECIMAL, 
+  rating: Sequelize.DECIMAL,
   reviews: Sequelize.INTEGER,
   price: Sequelize.TEXT,
   category: Sequelize.TEXT,
   purchase_url: Sequelize.TEXT
-}, {
-  underscored: true
-});
-
-let users = sequelize.define('user', {
-  username: Sequelize.TEXT,
-  email: Sequelize.TEXT,
-  password: Sequelize.TEXT
 }, {
   underscored: true
 });
